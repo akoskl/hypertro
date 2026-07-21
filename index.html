@@ -161,8 +161,9 @@ if(!was){const allDone=next[ei].rows.every(r=>r.done);if(allDone&&ei<next.length
                       fontSize:15,fontWeight:700,cursor:"pointer"}},n))
                 ),
                 cur.pump&&cur.pump<=2&&/*#__PURE__*/React.createElement("div",{style:{fontSize:11,color:"#f8a44c",marginTop:6}},"Low pump — consider swapping this exercise if this keeps happening.")
-              ),
-              /*#__PURE__*/React.createElement("div",{style:{background:"#0d0d16",borderRadius:10,padding:"10px 12px"}},
+              )
+            ),
+            /*#__PURE__*/React.createElement("div",{style:{background:"#0d0d16",borderRadius:10,padding:"10px 12px"}},
               // Duration selector
               restCount===null&&/*#__PURE__*/React.createElement("div",null,
                 /*#__PURE__*/React.createElement("div",{style:{display:"flex",gap:5,flexWrap:"wrap",marginBottom:8}},
@@ -187,7 +188,7 @@ if(!was){const allDone=next[ei].rows.every(r=>r.done);if(allDone&&ei<next.length
                   style:{background:"#2a2a3a",border:"none",color:"#888",borderRadius:8,padding:"8px 14px",fontSize:13,cursor:"pointer"}},
                   "Stop")
               )
-            ))))));}// --- Progress charts --------------------------------------------------
+            )))));}// --- Progress charts --------------------------------------------------
 function ProgressView({sessions,programs}){const[chartType,setChartType]=useState("weight");const[selEx,setSelEx]=useState(null);const allExNames=useMemo(()=>{const s=new Set();sessions.forEach(sess=>sess.exercises?.forEach(e=>s.add(e.name)));return[...s].sort();},[sessions]);useEffect(()=>{if(allExNames.length>0&&!selEx)setSelEx(allExNames[0]);},[allExNames]);// Weight + 1RM data per exercise
 const weightData=useMemo(()=>{if(!selEx)return[];return sessions.filter(s=>s.exercises?.some(e=>e.name===selEx)).sort((a,b)=>a.date.localeCompare(b.date)).map(s=>{const ex=s.exercises.find(e=>e.name===selEx);const sets=ex?.sets||[];const maxKg=Math.max(...sets.map(r=>parseFloat(r.kg)||0));const maxReps=Math.max(...sets.map(r=>parseInt(r.reps)||0));// Epley formula: weight × (1 + reps/30)
 const e1rm=maxKg>0&&maxReps>0?Math.round(maxKg*(1+maxReps/30)*10)/10:null;return{date:s.date.slice(5),kg:maxKg,e1rm,week:WEEK_NAMES[s.week??0].replace("Week ","W")};}).filter(d=>d.kg>0);},[sessions,selEx]);const durationData=useMemo(()=>[...sessions].sort((a,b)=>a.date.localeCompare(b.date)).map(s=>({date:s.date.slice(5),mins:Math.round(s.duration/60)})),[sessions]);// Volume load per muscle per week (sets × reps × weight)
